@@ -1,6 +1,7 @@
 package guru.springframework.spring5webapp.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -18,7 +19,7 @@ import java.util.Set;
 
         @ManyToMany
         @JoinTable(name="author_book",joinColumns = @JoinColumn(name="book_id"),inverseJoinColumns = @JoinColumn(name = "author_id"))
-        private Set<Author> authors;
+        private Set<Author> authors = new HashSet<>();
 
         public Set<Author> getAuthors() {
             return authors;
@@ -51,4 +52,29 @@ import java.util.Set;
         public void setIsbn(String isbn) {
             this.isbn = isbn;
         }
-}
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Book book = (Book) o;
+
+            return Id != null ? Id.equals(book.Id) : book.Id == null;
+        }
+
+        @Override
+        public int hashCode() {
+            return Id != null ? Id.hashCode() : 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Book{" +
+                    "Id=" + Id +
+                    ", title='" + title + '\'' +
+                    ", isbn='" + isbn + '\'' +
+                    ", authors=" + authors +
+                    '}';
+        }
+    }
